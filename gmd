@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Added to GIThub https://github.com/viper0131/gasmeter
+
 # Our lamps:
 #	(These are wiringPi pin numbers)
 green=7
