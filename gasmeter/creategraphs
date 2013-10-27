@@ -1,8 +1,0 @@
-#!/bin/bash
-
-rrdtool graph img/counter-day.png -w 1000 -h 300 \
-              --title "Gasmeter (dt: 5 min)" \
-              -s -1d \
-              -v "Kubikemeter per uur" \
-              DEF:counter='/var/lib/gasmeter/gm-counter.rrd':counter:LAST \
-              LINE1:counter#00008B

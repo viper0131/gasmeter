@@ -141,21 +141,21 @@ createRRD ()
 {
   START=`date --date="\`date +%a\ %b\ %e\ 00:00\`" +%s`
 
-  if [ ! -f /var/lib/gasmeter/gm-flow.rrd ]; then
-    echo "/var/lib/gasmeter/gm-flow.rrd not found!"
-    rrdtool create /var/lib/gasmeter/gm-flow.rrd \
+  if [ ! -f $DB_FLOW ]; then
+    echo "Creating $DB_FLOW..."
+    rrdtool create $DB_FLOW \
     --start $START \
     --step 300 \
-    DS:flow:GAUGE:600:0:6 \
+    DS:flow:GAUGE:60:0:6 \
     RRA:AVERAGE:0.75:1:17856 \
     RRA:AVERAGE:0.75:12:17856 \
     RRA:AVERAGE:0.75:288:17856 \
     RRA:MAX:0.75:12:1488
   fi
 
-  if [ ! -f /var/lib/gasmeter/gm-counter.rrd ]; then
-    echo "/var/lib/gasmeter/gm-counter.rrd not found!"
-    rrdtool create /var/lib/gasmeter/gm-counter.rrd \
+  if [ ! -f $DB_COUNTER ]; then
+    echo "Creating $DB_COUNTER..."
+    rrdtool create $DB_COUNTER \
     --start $START \
     --step 300 \
     DS:counter:GAUGE:600:0:99999999 \
@@ -175,7 +175,7 @@ updateRRD()
 #####################################################################
 # Default scale used by float functions.
 
-float_scale=2
+float_scale=6
 
 function float_eval()
 {
