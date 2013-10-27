@@ -1,10 +1,10 @@
 [ OK ] Setup RDD
 [ OK ] Update ticks to RDD
-[....] Update flow to RDD
+[ OK ] Update flow to RDD
 [....] Move fix values to config file 
-[....] Generate images
-[....] Setup webserver to show images
-[....] Generate Gasmeter webpage 
+[ OK ] Generate images
+[ OK ] Setup webserver to show images
+[ OK ] Generate Gasmeter webpage 
 [....] 
 [....] 
 [....] 
