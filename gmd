@@ -111,8 +111,8 @@ calcFlow()
     e="$DELTA_COUNT * $TICK_SIZE / $DELTA * 3.6"
     FLOW2=$(float_eval "$e") 
 
-    echo "flow (l/s): $FLOW"
-    echo "flow (k/h): $FLOW2"
+    #echo "flow (l/s): $FLOW"
+    #echo "flow (k/h): $FLOW2"
  
   fi 
   PREV_TICKDATE=$TICKDATE
@@ -169,6 +169,7 @@ createRRD ()
 
 updateRRD()
 {
+  echo "update RRD ($1, $2)" 
   rrdtool update $DB_COUNTER N:$1
   rrdtool update $DB_FLOW N:$2
 }
