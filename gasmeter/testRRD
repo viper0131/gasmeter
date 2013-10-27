@@ -1,0 +1,27 @@
+#!/bin/bash
+COUNTER=0
+PREV_COUNTER=0
+DATADIR="/var/lib/gasmeter"
+COUNTERDATA="$DATADIR/counter"
+DB_COUNTER="$DATADIR/gm-counter.rrd"
+DB_FLOW="$DATADIR/gm-flow.rrd"
+
+LOGFILE="/var/log/gasmeter.log"
+TICKDATE=0
+PREV_TICKDATE=0
+TICK_SIZE=10 # each tick is 10L gas
+
+FLOW=0
+FLOW2=0
+
+echo "Bash version ${BASH_VERSION}..."
+for i in {5198073..5198173..1}
+  do
+     echo "Counter $i "
+     rrdtool update $DB_COUNTER N:$i
+     for i in {1..20..1}
+     do
+       echo -n "."
+       sleep 5
+     done
+ done
