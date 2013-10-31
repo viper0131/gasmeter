@@ -14,7 +14,9 @@ PREV_COUNTER=0
 DATADIR="/var/lib/gasmeter"
 COUNTERDATA="$DATADIR/counter"
 DB_COUNTER="$DATADIR/gm-counter.rrd"
+DB_COUNTER="$DATADIR/gm-counter-highres.rrd"
 DB_FLOW="$DATADIR/gm-flow.rrd"
+DB_FLOW_HIGHRES="$DATADIR/gm-flow-highres.rrd"
 
 LOGFILE="/var/log/gasmeter.log"
 TICKDATE=0
@@ -156,16 +158,40 @@ createRRD ()
 {
   START=`date --date="\`date +%a\ %b\ %e\ 00:00\`" +%s`
 
+  if [ ! -f $DB_FLOW_HIGHRES ]; then
+    echo "Creating $DB_FLOW_HIGHRES..."
+    rrdtool create $DB_FLOW_HIGHRES \
+    --start $START \
+    --step 10 \
+    DS:flow:GAUGE:60:0:6 \
+    RRA:AVERAGE:0.75:1:535680 \
+    RRA:AVERAGE:0.75:12:535680 \
+    RRA:AVERAGE:0.75:288:535680 \
+    RRA:LAST:0.75:1:1488 \
+    RRA:MAX:0.75:12:1488
+  fi
+
   if [ ! -f $DB_FLOW ]; then
     echo "Creating $DB_FLOW..."
     rrdtool create $DB_FLOW \
     --start $START \
     --step 300 \
-    DS:flow:GAUGE:60:0:6 \
+    DS:flow:GAUGE:600:0:6 \
     RRA:AVERAGE:0.75:1:17856 \
     RRA:AVERAGE:0.75:12:17856 \
     RRA:AVERAGE:0.75:288:17856 \
     RRA:MAX:0.75:12:1488
+  fi
+
+  if [ ! -f $DB_COUNTER_HIGHRES ]; then
+    echo "Creating $DB_COUNTER_HIGHRES..."
+    rrdtool create $DB_COUNTER_HIGHRES \
+    --start $START \
+    --step 10 \
+    DS:counter:GAUGE:60:0:99999999 \
+    RRA:LAST:0.75:1:535680 \
+    RRA:LAST:0.75:12:535680 \
+    RRA:LAST:0.75:288:535680
   fi
 
   if [ ! -f $DB_COUNTER ]; then
@@ -184,8 +210,10 @@ updateRRD()
 {
   echo "update RRD ($1, $2)" 
   rrdtool update $DB_COUNTER N:$1
+  rrdtool update $DB_COUNTER_HIGHRES N:$1
   if [[ $2 > 0 ]]; then
     rrdtool update $DB_FLOW N:$2
+    rrdtool update $DB_FLOW_HIGHRES N:$2
   fi
 }
 

@@ -3,7 +3,9 @@
 IMGDIR=/var/www/img
 
 rrdtool graph $IMGDIR/counter-hour.png -w 540 -h 140 \
-              --title "Gasmeter (dt: 5 min)" \
+              --title "Gasmeter" \
+              -c CANVAS#FCFCFC -c FONT#000000 -c BACK#FCFCFC \
+              --slope-mode \
               -s -1h \
               -v "Kuubs" \
               --units-exponent 0 \
@@ -11,11 +13,12 @@ rrdtool graph $IMGDIR/counter-hour.png -w 540 -h 140 \
               --alt-autoscale \
               --rigid \
               --watermark "`date`" \
-              DEF:counter='/var/lib/gasmeter/gm-counter.rrd':counter:LAST \
+              DEF:counter='/var/lib/gasmeter/gm-counter-highres.rrd':counter:LAST \
               LINE1:counter#FF0000 \
 
 rrdtool graph $IMGDIR/counter-day.png -w 540 -h 140 \
-              --title "Gasmeter (dt: 5 min)" \
+              --title "Gasmeter" \
+              --slope-mode \
               -s -1d \
               -v "Kuubs" \
               --units-exponent 0 \
@@ -23,12 +26,13 @@ rrdtool graph $IMGDIR/counter-day.png -w 540 -h 140 \
               --alt-y-grid \
               --rigid \
               --watermark "`date`" \
-              DEF:counter='/var/lib/gasmeter/gm-counter.rrd':counter:LAST \
+              DEF:counter='/var/lib/gasmeter/gm-counter-highres.rrd':counter:LAST \
               CDEF:counterkuubs=counter,1,/ \
               LINE1:counterkuubs#FF0000
 
 rrdtool graph $IMGDIR/counter-week.png -w 540 -h 140 \
-              --title "Gasmeter (dt: 5 min)" \
+              --title "Gasmeter" \
+              --slope-mode \
               -s -1w \
               -v "Kuubs" \
               --units-exponent 0 \
@@ -36,34 +40,34 @@ rrdtool graph $IMGDIR/counter-week.png -w 540 -h 140 \
               --alt-y-grid \
               --rigid \
               --watermark "`date`" \
-              DEF:counter='/var/lib/gasmeter/gm-counter.rrd':counter:LAST \
+              DEF:counter='/var/lib/gasmeter/gm-counter-highres.rrd':counter:LAST \
               CDEF:counterkuubs=counter,1,/ \
               LINE1:counterkuubs#FF0000
 
 rrdtool graph $IMGDIR/flow-hour.png -w 540 -h 140 \
-              --title "Gasflow (dt: 5 min)" \
+              --title "Gasflow" \
               --slope-mode \
               -s -1h \
               -v "Kubikemeter per uur" \
               --watermark "`date`" \
-              DEF:flow='/var/lib/gasmeter/gm-flow.rrd':flow:AVERAGE \
+              DEF:flow='/var/lib/gasmeter/gm-flow-highres.rrd':flow:AVERAGE \
               AREA:flow#00008B
 
 rrdtool graph $IMGDIR/flow-day.png -w 540 -h 140 \
-              --title "Gasflow (dt: 5 min)" \
+              --title "Gasflow" \
               --slope-mode \
               -s -1d \
               -v "Kuub per uur" \
               --watermark "`date`" \
-              DEF:flow='/var/lib/gasmeter/gm-flow.rrd':flow:AVERAGE \
+              DEF:flow='/var/lib/gasmeter/gm-flow-highres.rrd':flow:AVERAGE \
               AREA:flow#00008B
 
 rrdtool graph $IMGDIR/flow-week.png -w 540 -h 140 \
-              --title "Gasflow (dt: 5 min)" \
+              --title "Gasflow" \
               --slope-mode \
               -s -1w \
               -v "Kubikemeter per uur" \
               --watermark "`date`" \
-              DEF:flow='/var/lib/gasmeter/gm-flow.rrd':flow:AVERAGE \
+              DEF:flow='/var/lib/gasmeter/gm-flow-highres.rrd':flow:AVERAGE \
               AREA:flow#00008B
 
